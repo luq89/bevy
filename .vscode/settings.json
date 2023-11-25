@@ -1,0 +1,14 @@
+{
+  "rust-analyzer.linkedProjects": [
+    ".\\Cargo.toml",
+    ".\\Cargo.toml"
+  ],
+  "editor.inlayHints.enabled": "offUnlessPressed", 
+  "editor.semanticTokenColorCustomizations": {
+    "rules": {
+      "*.mutable": {
+        "fontStyle": "", // set to empty string to disable underline, which is the default
+      },
+    }
+  },
+}

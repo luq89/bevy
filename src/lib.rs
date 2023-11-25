@@ -1,21 +1,34 @@
 #![allow(clippy::type_complexity)]
 
 mod actions;
+mod animate;
 mod audio;
+mod config;
+mod enemy;
 mod loading;
 mod menu;
 mod player;
+mod tilemap;
+mod camera;
 
 use crate::actions::ActionsPlugin;
 use crate::audio::InternalAudioPlugin;
+use crate::enemy::EnemyPlugin;
 use crate::loading::LoadingPlugin;
 use crate::menu::MenuPlugin;
 use crate::player::PlayerPlugin;
+use crate::tilemap::TilemapPlugin;
+use crate::camera::CameraPlugin;
 
-use bevy::app::App;
+use bevy::{app::App};
+
 #[cfg(debug_assertions)]
 use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
 use bevy::prelude::*;
+
+use bevy_common_assets::ron::RonAssetPlugin;
+use config::{Config, ConfigPlugin};
+use loading::Level;
 
 // This example game uses States to separate logic
 // See https://bevy-cheatbook.github.io/programming/states.html
@@ -36,13 +49,17 @@ pub struct GamePlugin;
 impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
         app.add_state::<GameState>().add_plugins((
+            RonAssetPlugin::<Level>::new(&["level.ron"]),
+            ConfigPlugin,
             LoadingPlugin,
             MenuPlugin,
             ActionsPlugin,
+            CameraPlugin,
             InternalAudioPlugin,
+            TilemapPlugin,
             PlayerPlugin,
+            EnemyPlugin,
         ));
-
         #[cfg(debug_assertions)]
         {
             app.add_plugins((FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin::default()));
